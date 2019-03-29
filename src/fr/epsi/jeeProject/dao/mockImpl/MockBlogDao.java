@@ -14,6 +14,42 @@ import fr.epsi.jeeProject.dao.IUtilisateurDao;
 
 public class MockBlogDao implements IBlogDao {
 
+	@Override
+	public Blog getBlog(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Blog> getBlogs(Utilisateur utilisateur) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer createBlog(Blog blog) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateBlog(Blog blog) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteBlog(Blog blog) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addReponse(Blog blog, Reponse reponse) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
 	private static List<Blog> listOfBlogs;
 	private IUtilisateurDao utilisateurDao = new MockUtilisateurDao();
 	private IStatutDao statutDao = new MockStatutDao();
@@ -87,7 +123,7 @@ public class MockBlogDao implements IBlogDao {
 			}
 		}
 	}
-	
+	/*
 	private List<Blog> getBlogs() {
 		if (listOfBlogs == null) {
 			listOfBlogs = new ArrayList<Blog>();
@@ -96,11 +132,12 @@ public class MockBlogDao implements IBlogDao {
 			blog.setTitre("First Blog");
 			blog.setDescription("My first blog");
 			blog.setDateCreation(new java.sql.Date(new Date().getTime()));
-			blog.setCreateur(utilisateurDao.getUtilisateur("contact@aquasys.fr"));
+			blog.setCreateur(utilisateurDao.getUti("contact@aquasys.fr"));
 			blog.setStatut(statutDao.getStatut(1));
 			listOfBlogs.add(blog);
 		}
 		return listOfBlogs;
 	}
+	*/
 
 }
