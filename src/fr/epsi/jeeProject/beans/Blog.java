@@ -13,6 +13,7 @@ public class Blog {
 	private Date dateModification;
 	private Statut statut;
 	private List<Reponse> listOfReponses;
+	private static int idBlog = 0;
 	
 	public List<Reponse> getListOfReponses() {
 		return listOfReponses;
@@ -24,7 +25,8 @@ public class Blog {
 		return id;
 	}
 	public void setId(Integer id) {
-		this.id = id;
+		idBlog++;
+		this.id = idBlog;
 	}
 	public String getTitre() {
 		return titre;

@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.epsi.jeeProject.beans.Blog;
 import fr.epsi.jeeProject.beans.Utilisateur;
+import fr.epsi.jeeProject.dao.mockImpl.MockBlogDao;
 import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 
 /**
@@ -39,7 +41,13 @@ public class ConnexionServlet extends HttpServlet {
 		for(Utilisateur u : users) {
 			 if (request.getParameter("email") != null && request.getParameter("email").equals(u.getEmail()) &&
 					 request.getParameter("password") != null && request.getParameter("password").equals(u.getPassword())){
-				 
+				 	
+				 	Utilisateur admin = MockUtilisateurDao.findByEmail("admin");
+				 	Blog blogBienvenue = new Blog();
+				 	blogBienvenue.setCreateur(admin);
+				 	blogBienvenue.setTitre("Bienvenue !");
+				 	blogBienvenue.setDescription("Bonjour à tous ! Ecrivez ce qui vous passe par la tête, personnne ne vous jugera !");
+				 	MockBlogDao.create(blogBienvenue,admin);
 					request.getRequestDispatcher("listBlogs.jsp").forward(request, response);
 			 }
 		}

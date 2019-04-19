@@ -1,143 +1,137 @@
 package fr.epsi.jeeProject.dao.mockImpl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import fr.epsi.jeeProject.beans.Blog;
-import fr.epsi.jeeProject.beans.Reponse;
 import fr.epsi.jeeProject.beans.Utilisateur;
-import fr.epsi.jeeProject.dao.IBlogDao;
-import fr.epsi.jeeProject.dao.IStatutDao;
-import fr.epsi.jeeProject.dao.IUtilisateurDao;
+import fr.epsi.jeeProject.dao.PersistenceManager;
+import fr.epsi.jeeProject.listener.StartupListener;
 
-public class MockBlogDao implements IBlogDao {
+public class MockBlogDao {
 
-	@Override
-	public Blog getBlog(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	private static final Logger logger = LogManager.getLogger(StartupListener.class);
+	private static final String FIND_ALL_QUERY = "SELECT * from blog";
+	private static final String INSERT_QUERY = "INSERT INTO blog (id,titre,description, createur, date_creation) values (?,?,?,?,?)";
+	private static final String UPDATE_QUERY = "UPDATE blog set titre = ?, description = ?, date_modification = ? where id = ?";
+	private static final String REMOVE_QUERY = "DELETE from blog where id = ?";
+	private static final String FIND_BY_ID_QUERY = "SELECT * from blog where id = ?";
+
+	public static void create(Blog b, Utilisateur u) {
+		int idBlog = 0;
+		Connection connection = PersistenceManager.getConnection();
+		try {
+			String selectIdBlog = "SELECT NEXT VALUE asFOR SEQ_ID_BLOG FROM BLOG ";
+			PreparedStatement st_select_id = connection.prepareStatement(selectIdBlog, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = st_select_id.executeQuery();
+			st_select_id.close();
+			if(rs.next()) {
+			      idBlog= rs.getInt(1);
+			}
+			PreparedStatement st_insert_blog = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
+			st_insert_blog.setInt(1, idBlog);
+			st_insert_blog.setString(2, b.getTitre());
+			st_insert_blog.setString(3, b.getDescription());
+			st_insert_blog.setString(4, u.getEmail());
+			st_insert_blog.setDate(5, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			st_insert_blog.executeUpdate();
+			st_insert_blog.close();
+			connection.close();
+		} catch (SQLException e) {
+			logger.error("Erreur lors de la création en base du blog " + b, e);
+		}
 	}
 
-	@Override
-	public List<Blog> getBlogs(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer createBlog(Blog blog) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void updateBlog(Blog blog) throws SQLException {
-		// TODO Auto-generated method stub
+	public static void update(Blog b) {
 		
+		Connection connection = PersistenceManager.getConnection();
+		try {
+			PreparedStatement st = connection.prepareStatement(UPDATE_QUERY, Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, b.getTitre());
+			st.setString(2, b.getDescription());
+			st.setDate(3, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			st.setInt(4, b.getId());
+			st.executeUpdate();
+			st.close();
+			connection.close();
+		} catch (SQLException e) {
+			logger.error("Erreur lors de la modification en base du blog " + b, e);
+		}
 	}
 
-	@Override
-	public void deleteBlog(Blog blog) throws SQLException {
-		// TODO Auto-generated method stub
+	public static void remove(Blog b) {
 		
-	}
-
-	@Override
-	public void addReponse(Blog blog, Reponse reponse) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-	/*
-	private static List<Blog> listOfBlogs;
-	private IUtilisateurDao utilisateurDao = new MockUtilisateurDao();
-	private IStatutDao statutDao = new MockStatutDao();
-	
-	@Override
-	public Blog getBlog(Integer id) {
-		for (Blog b : getBlogs()) {
-			if (b.getId().intValue() == id.intValue()) {
-				return b;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public List<Blog> getBlogs(Utilisateur utilisateur) {
-		List<Blog> myBlogs = new ArrayList<Blog>();
-		for (Blog b : getBlogs()) {
-			if (b.getCreateur().getEmail().equals(utilisateur.getEmail())) {
-				myBlogs.add(b);
-			} else if (b.getStatut().getId().intValue() == IStatutDao.PUBLIE) {
-				myBlogs.add(b);
-			}
-		}
-		return myBlogs;
-	}
-
-	@Override
-	public Integer createBlog(Blog blog) throws SQLException {
-		int max = 0;
-		for (Blog b : getBlogs()) {
-			if (b.getId().intValue() > max) {
-				max = b.getId();
-			}
-		}
-		max+=1;
-		blog.setId(max);
-		return max;
-	}
-
-	@Override
-	public void updateBlog(Blog blog) throws SQLException {
-		for (Blog b : getBlogs()) {
-			if (b.getId().intValue() == blog.getId().intValue()) {
-				b.setTitre(blog.getTitre());
-				b.setDescription(blog.getDescription());
-				blog.setDateModification(new java.sql.Date(new Date().getTime()));
-			}
+		Connection connection = PersistenceManager.getConnection();
+		try {
+			PreparedStatement st = connection.prepareStatement(REMOVE_QUERY, Statement.RETURN_GENERATED_KEYS);
+			st.setInt(1, b.getId());
+			st.executeUpdate();
+			st.close();
+			connection.close();
+		} catch (SQLException e) {
+			logger.error("Erreur lors de la suppression en base du blog " + b, e);
 		}
 	}
 
-	@Override
-	public void deleteBlog(Blog blog) throws SQLException {
-		for (Blog b : getBlogs()) {
-			if (b.getId().intValue() == blog.getId().intValue()) {
-				getBlogs().remove(b);
-				return;
-			}
-		}
-	}
+	public Blog findById(int id) {
 
-	@Override
-	public void addReponse(Blog blog, Reponse reponse) throws SQLException {
-		for (Blog b : getBlogs()) {
-			if (b.getId().intValue() == blog.getId().intValue()) {
-				if (b.getListOfReponses() == null) {
-					b.setListOfReponses(new ArrayList<Reponse>());
-				}
-				b.getListOfReponses().add(reponse);
-				return;
-			}
-		}
-	}
-	/*
-	private List<Blog> getBlogs() {
-		if (listOfBlogs == null) {
-			listOfBlogs = new ArrayList<Blog>();
+		Connection connection = PersistenceManager.getConnection();
+		try {
+			PreparedStatement st = connection.prepareStatement(FIND_BY_ID_QUERY, Statement.RETURN_GENERATED_KEYS);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
 			Blog blog = new Blog();
-			blog.setId(1);
-			blog.setTitre("First Blog");
-			blog.setDescription("My first blog");
-			blog.setDateCreation(new java.sql.Date(new Date().getTime()));
-			blog.setCreateur(utilisateurDao.getUti("contact@aquasys.fr"));
-			blog.setStatut(statutDao.getStatut(1));
-			listOfBlogs.add(blog);
+			if (rs != null) {
+				if (rs.next()) {
+					blog.setId(rs.getInt("id"));
+					blog.setCreateur(MockUtilisateurDao.findByEmail(rs.getString("createur")));
+					blog.setTitre(rs.getString("titre"));
+					blog.setDescription(rs.getString("description"));
+					blog.setDateCreation(rs.getDate("date_creation"));
+					blog.setDateModification(rs.getDate("date_modification"));
+					st.close();
+					return blog;
+				}
+			}
+		} catch (SQLException e) {
+			logger.error("Erreur lors de la récupération en base du blog dont l'identifiant est" + id, e);
 		}
-		return listOfBlogs;
+		return null;
 	}
-	*/
 
+	public List<Blog> findAll() {
+		
+		List<Blog> liste = new ArrayList<Blog>();
+		Connection con = PersistenceManager.getConnection();
+		try {
+			PreparedStatement st = con.prepareStatement(FIND_ALL_QUERY, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = st.executeQuery();
+			if (rs != null) {
+				while (rs.next()) {
+					Blog blog = new Blog();
+					blog.setId(rs.getInt("id"));
+					blog.setCreateur(MockUtilisateurDao.findByEmail(rs.getString("createur")));
+					blog.setTitre(rs.getString("titre"));
+					blog.setDescription(rs.getString("description"));
+					blog.setDateCreation(rs.getDate("date_creation"));
+					blog.setDateModification(rs.getDate("date_modification"));
+					liste.add(blog);
+				}
+			}
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			logger.error("Erreur lors de la récupération des utilisateurs en base");
+		}
+		return liste;
+	}
 }

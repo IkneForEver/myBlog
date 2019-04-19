@@ -13,7 +13,7 @@
 				<h1>Fil d'actualité</h1> 
 			</td>
 			<td colspan="20">
-				<form action = "Deconnexion" method = "POST">
+				<form action = "Connexion" method = "POST">
 					<input type="submit" value="Quitter">
 				</form>
 			</td>

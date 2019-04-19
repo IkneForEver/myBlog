@@ -1,6 +1,8 @@
 package fr.epsi.jeeProject.dao.mockImpl;
 
 import java.util.ArrayList;
+
+/*
 import java.util.List;
 
 import fr.epsi.jeeProject.beans.Statut;
@@ -50,4 +52,5 @@ public class MockStatutDao implements IStatutDao {
 		}
 		return listOfStatuts;
 	}
-}
+	
+}*/
