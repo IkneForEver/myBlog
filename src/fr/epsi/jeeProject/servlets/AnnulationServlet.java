@@ -19,8 +19,8 @@ import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 /**
  * Servlet implementation class ConnexionServlet
  */
-@WebServlet("/CreationBlog")
-public class CreationBlogServlet extends HttpServlet {
+@WebServlet("/Annulation")
+public class AnnulationServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final MockUtilisateurDao utilisateurDao = new MockUtilisateurDao();
@@ -28,7 +28,7 @@ public class CreationBlogServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CreationBlogServlet() {
+	public AnnulationServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -39,33 +39,16 @@ public class CreationBlogServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-			
-			String titre = request.getParameter("titre");
-			String description = request.getParameter("description");
-		 	String email = (String) request.getParameter("email");
-		 	Utilisateur utilisateurCourant = MockUtilisateurDao.findByEmail(email);
-		 	
-			if(titre != null & !titre.isEmpty() && description != null & !description.isEmpty() && utilisateurCourant != null ) {
-				
-				//Création du nouveau blog en base
-			 	Blog blogBienvenue = new Blog();
-			 	blogBienvenue.setCreateur(utilisateurCourant);
-			 	blogBienvenue.setTitre(titre);
-			 	blogBienvenue.setDescription(description);
-			 	MockBlogDao.create(blogBienvenue,utilisateurCourant);
-				
-				//redirection vers la liste des blogs
-				request.setAttribute("email",email);
-				ServletContext context = getServletContext();
-				RequestDispatcher rd = context.getRequestDispatcher("/Blogs");
-				rd.forward(request, response);
-			}
-			else {
-				request.setAttribute("email",email);
-				request.getRequestDispatcher("creationBlog.jsp").forward(request, response);
-			}
+
+		// Récupération de l'utilisateur courant grâce à son email
+		String email = (String) request.getParameter("email");
+
+		// redirection vers la servlet qui gère les blogs
+		request.setAttribute("email", email);
+		RequestDispatcher rd = request.getRequestDispatcher("/Blogs");
+		rd.forward(request, response);
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -75,7 +58,7 @@ public class CreationBlogServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		
+
 	}
 
 }

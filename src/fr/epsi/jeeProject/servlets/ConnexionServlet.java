@@ -47,7 +47,7 @@ public class ConnexionServlet extends HttpServlet {
 					&& request.getParameter("password").equals(u.getPassword())) {
 				
 				//récupération de l'utilisateur qui s'est connecté
-				request.setAttribute("emailUtilisateurCourant",email);
+				request.setAttribute("email",email);
 
 				// redirection vers la servlet qui gère les blogs
 				RequestDispatcher rd = request.getRequestDispatcher("/Blogs");

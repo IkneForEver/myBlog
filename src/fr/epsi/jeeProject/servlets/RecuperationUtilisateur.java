@@ -41,17 +41,17 @@ public class RecuperationUtilisateur extends HttpServlet {
 			throws ServletException, IOException {
 		
 			//Récupération de l'utilisateur courant grâce à son email
-		 	String email = (String) request.getAttribute("emailUtilisateurCourant");
-		 
+		 	String email = (String) request.getParameter("email");
+		 			 
 			if( email != null ) {
 				//redirection vers la creation des blogs avec l'utilisateur en paramètre
-				request.setAttribute("emailUtilisateurCourant",email);
+				request.setAttribute("email",email);
 				request.getRequestDispatcher("creationBlog.jsp").forward(request, response);
 			}
 			else {
 				// redirection vers la servlet qui gère les blogs
-				ServletContext context = getServletContext();
-				RequestDispatcher rd = context.getRequestDispatcher("/Blogs");
+				request.setAttribute("email",email);
+				RequestDispatcher rd = request.getRequestDispatcher("/Blogs");
 				rd.forward(request, response);
 			}
 	}

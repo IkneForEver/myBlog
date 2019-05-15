@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
@@ -16,7 +15,7 @@
 <body>
 	<table>
 		<tr>
-			<td>Ravi de vous retrouver <% out.println(request.getAttribute("emailUtilisateurCourant")); %> ! </td>
+			<td>Ravi de vous retrouver <% out.println(request.getAttribute("email")); %> ! </td>
 		</tr>
 		<tr>
 			<td colspan="40">
@@ -29,7 +28,7 @@
 			</td>
 			<td colspan="40">
 				<form action="RecuperationUtilisateur" method="POST">
-					<input type="hidden" id="emailUtilisateurCourant" name="emailUtilisateurCourant" value= "<% request.getAttribute("emailUtilisateurCourant"); %>">
+					<input type="hidden" name="email" value= "<% out.print(request.getAttribute("email")); %>">
 					<input type="submit" value="Créer un nouveau blog">
 				</form>
 			</td>
@@ -64,15 +63,6 @@
 				//out.println("</tr>");
 			}
 		%>
-		
 	</table>
-	
-	<form action="Connexion/BlogDescription" method="POST">
-			<input type="submit" value="Description blog">
-	</form>
-
-
-
-
 </body>
 </html>

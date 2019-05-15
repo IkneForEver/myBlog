@@ -22,7 +22,7 @@ public class BlogsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final MockBlogDao mockBlogDao = new MockBlogDao();
 	private List<Blog> blogs;
-	private String emailUtilisateurCourant;
+	private String email;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,10 +42,10 @@ public class BlogsServlet extends HttpServlet {
 		blogs = mockBlogDao.findAll();
 		
 		//récupération de l'email de l'utilisateur courant
-		emailUtilisateurCourant=(String) request.getAttribute("emailUtilisateurCourant");
+		email=(String) request.getAttribute("email");
 
 		request.setAttribute("blogs", blogs);
-		request.setAttribute("emailUtilisateurCourant",emailUtilisateurCourant);
+		request.setAttribute("email",email);
 		request.getRequestDispatcher("listBlogs.jsp").forward(request, response);
 
 	}
