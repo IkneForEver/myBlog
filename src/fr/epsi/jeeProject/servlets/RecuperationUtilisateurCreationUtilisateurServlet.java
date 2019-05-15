@@ -19,8 +19,8 @@ import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 /**
  * Servlet implementation class ConnexionServlet
  */
-@WebServlet("/RecuperationUtilisateurCreationBlog")
-public class RecuperationUtilisateurCreationBlogServlet extends HttpServlet {
+@WebServlet("/RecuperationUtilisateurCreationUtilisateur")
+public class RecuperationUtilisateurCreationUtilisateurServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final MockUtilisateurDao mockUtilisateurDao = new MockUtilisateurDao();
@@ -29,7 +29,7 @@ public class RecuperationUtilisateurCreationBlogServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RecuperationUtilisateurCreationBlogServlet() {
+	public RecuperationUtilisateurCreationUtilisateurServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,15 +45,14 @@ public class RecuperationUtilisateurCreationBlogServlet extends HttpServlet {
 		 	String email = (String) request.getParameter("email");
 		 			 
 			if( email != null ) {
-				
 				//recuperation de l'utilisateur en fonction de son email
 				Utilisateur user = mockUtilisateurDao.findByEmail(email);
 				String nom = user.getNom();
 				
-				//redirection vers la creation des blogs avec l'utilisateur en paramètre
+				//redirection vers la creation des utilisateurs avec l'utilisateur en paramètre
 				request.setAttribute("nom",nom);
 				request.setAttribute("email",email);
-				request.getRequestDispatcher("creationBlog.jsp").forward(request, response);
+				request.getRequestDispatcher("creationUtilisateur.jsp").forward(request, response);
 			}
 			else {
 				// redirection vers la servlet qui gère les blogs

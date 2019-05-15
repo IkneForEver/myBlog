@@ -23,7 +23,7 @@ import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 public class CreationBlogServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final MockUtilisateurDao utilisateurDao = new MockUtilisateurDao();
+	private static final MockUtilisateurDao mockUtilisateurDao = new MockUtilisateurDao();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -44,8 +44,11 @@ public class CreationBlogServlet extends HttpServlet {
 			String titre = request.getParameter("titre");
 			String description = request.getParameter("description");
 		 	String email = (String) request.getParameter("email");
-		 	Utilisateur utilisateurCourant = MockUtilisateurDao.findByEmail(email);
 		 	
+		 	//recuperation de l'utilisateur grâce à son email
+		 	Utilisateur utilisateurCourant = mockUtilisateurDao.findByEmail(email);
+			String nom = utilisateurCourant.getNom();
+
 			if(titre != null & !titre.isEmpty() && description != null & !description.isEmpty() && utilisateurCourant != null ) {
 				
 				//Création du nouveau blog en base
@@ -54,15 +57,18 @@ public class CreationBlogServlet extends HttpServlet {
 			 	blogBienvenue.setTitre(titre);
 			 	blogBienvenue.setDescription(description);
 			 	MockBlogDao.create(blogBienvenue,utilisateurCourant);
-				
+			 	
 				//redirection vers la liste des blogs
 				request.setAttribute("email",email);
+				request.setAttribute("nom",nom);
 				ServletContext context = getServletContext();
 				RequestDispatcher rd = context.getRequestDispatcher("/Blogs");
 				rd.forward(request, response);
 			}
 			else {
+				request.setAttribute("nom",nom);
 				request.setAttribute("email",email);
+				request.setAttribute("erreur","Tous les champs sont obligatoires ! ");
 				request.getRequestDispatcher("creationBlog.jsp").forward(request, response);
 			}
 	}

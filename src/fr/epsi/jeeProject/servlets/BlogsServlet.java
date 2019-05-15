@@ -21,6 +21,7 @@ import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 public class BlogsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final MockBlogDao mockBlogDao = new MockBlogDao();
+	private static final MockUtilisateurDao mockUtilisateurDao = new MockUtilisateurDao();
 	private List<Blog> blogs;
 	private String email;
        
@@ -43,9 +44,14 @@ public class BlogsServlet extends HttpServlet {
 		
 		//récupération de l'email de l'utilisateur courant
 		email=(String) request.getAttribute("email");
+		
+		//recuperation de l'utilisateur grâce à son email
+		Utilisateur utilisateur = mockUtilisateurDao.findByEmail(email);
+		String nom = utilisateur.getNom();
 
 		request.setAttribute("blogs", blogs);
 		request.setAttribute("email",email);
+		request.setAttribute("nom", nom);
 		request.getRequestDispatcher("listBlogs.jsp").forward(request, response);
 
 	}

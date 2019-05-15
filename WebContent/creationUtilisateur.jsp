@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Création d'un blog</title>
+<title>Création d'un utilisateur</title>
 </head>
 <body>
 	<table>
@@ -13,23 +13,31 @@
 			</td>
 		</tr>
 	</table>
-	<h1>Création d'un blog</h1>
+	<h1>Création d'un utilisateur</h1>
 			<%
 				if(request.getAttribute("erreur")!= null){
 					out.println(request.getAttribute("erreur"));
 				}
 			%>
-	<form action="CreationBlog" method="POST">
+	<form action="CreationUtilisateur" method="POST">
 		<input type="hidden" name="email"
 			value="<%out.print(request.getAttribute("email"));%>">
 		<table>
 			<tr>
-				<td>Titre du blog</td>
-				<td><input type="text" name="titre"></td>
+				<td>Nom</td>
+				<td><input type="text" name="nomcreation"></td>
 			</tr>
 			<tr>
-				<td>Description du blog</td>
-				<td><input type="text" name="description"> <br></td>
+				<td>Email</td>
+				<td><input type="text" name="emailcreation"> <br></td>
+			</tr>
+			<tr>
+				<td>Mot de passe</td>
+				<td><input type="text" name="passwordcreation"> <br></td>
+			</tr>
+			<tr>
+				<td>Administrateur</td>
+				<td><input type="checkbox" name="isAdmin"> <br></td>
 			</tr>
 
 			<tr>

@@ -15,7 +15,7 @@
 <body>
 	<table>
 		<tr>
-			<td>Ravi de vous retrouver <% out.println(request.getAttribute("email")); %> ! </td>
+			<td>Ravi de vous retrouver <% out.print(request.getAttribute("nom")); %> ! </td>
 		</tr>
 		<tr>
 			<td colspan="40">
@@ -27,9 +27,15 @@
 				</form>
 			</td>
 			<td colspan="40">
-				<form action="RecuperationUtilisateur" method="POST">
+				<form action="RecuperationUtilisateurCreationBlog" method="POST">
 					<input type="hidden" name="email" value= "<% out.print(request.getAttribute("email")); %>">
 					<input type="submit" value="Créer un nouveau blog">
+				</form>
+			</td>
+			<td colspan="40">
+				<form action="RecuperationUtilisateurCreationUtilisateur" method="POST">
+					<input type="hidden" name="email" value= "<% out.print(request.getAttribute("email")); %>">
+					<input type="submit" value="Créer un nouvel utilisateur">
 				</form>
 			</td>
 		</tr>
