@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="fr.epsi.jeeProject.beans.Blog"%>
+<%@ page import="java.util.Iterator"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,20 +16,63 @@
 <body>
 	<table>
 		<tr>
-			<td>
-				<h1>Fil d'actualité</h1> 
+			<td>Ravi de vous retrouver <% out.println(request.getAttribute("emailUtilisateurCourant")); %> ! </td>
+		</tr>
+		<tr>
+			<td colspan="40">
+				<h1>Fil d'actualité</h1>
 			</td>
-			<td colspan="20">
-				<form action = "Connexion" method = "POST">
+			<td colspan="40">
+				<form action="Connexion" method="POST">
 					<input type="submit" value="Quitter">
 				</form>
 			</td>
-		</tr>
-		<tr>
-			<td>
-			Mon fils d'actu
+			<td colspan="40">
+				<form action="RecuperationUtilisateur" method="POST">
+					<input type="hidden" id="emailUtilisateurCourant" name="emailUtilisateurCourant" value= "<% request.getAttribute("emailUtilisateurCourant"); %>">
+					<input type="submit" value="Créer un nouveau blog">
+				</form>
 			</td>
 		</tr>
+
+		<%
+			out.println("<\n> <\n>");
+		%>
+		<tr>
+			<td>SUJET</td>
+			<td>AUTEUR</td>
+			<td>DERNIER MSG</td>
+		<tr>
+
+		<%
+			List<Blog> blogList = (ArrayList<Blog>) request.getAttribute("blogs");
+			for(int i=0;i<blogList.size();i++) {
+				Blog blog = blogList.get(i);
+				out.println("<tr>");
+				out.println("<td>");
+				out.println("<a href = \"Blog.jsp?blogId=${"+blog.getId()+"}>"+ blog.getTitre()+"</a>");
+				out.println("</td>");
+				out.println("<td>");
+				out.println(blog.getCreateur().getNom());
+				out.println("</td>");
+				out.println("<td>");
+				out.println(blog.getDateModification());
+				out.println("</td>");
+				out.println("</tr>");
+				//out.println("<tr>");
+				//out.println("<form action=\"Blog\" method=\"POST\"><input type=\"submit\" value=\"Quitter\"></form>");
+				//out.println("</tr>");
+			}
+		%>
+		
 	</table>
+	
+	<form action="Connexion/BlogDescription" method="POST">
+			<input type="submit" value="Description blog">
+	</form>
+
+
+
+
 </body>
 </html>

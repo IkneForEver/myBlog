@@ -25,7 +25,6 @@ public class Blog {
 		return id;
 	}
 	public void setId(Integer id) {
-		idBlog++;
 		this.id = idBlog;
 	}
 	public String getTitre() {

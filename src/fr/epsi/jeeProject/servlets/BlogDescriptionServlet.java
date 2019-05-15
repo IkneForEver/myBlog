@@ -1,7 +1,7 @@
 package fr.epsi.jeeProject.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,21 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.epsi.jeeProject.beans.Blog;
 import fr.epsi.jeeProject.beans.Utilisateur;
+import fr.epsi.jeeProject.dao.mockImpl.MockBlogDao;
 import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 
 /**
- * Servlet implementation class ConnexionServlet
+ * Servlet implementation class BlogsServlet
  */
-@WebServlet("/Deconnexion")
-public class DeconnexionServlet extends HttpServlet {
-	
+@WebServlet("/BlogDescription")
+public class BlogDescriptionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+	private static final MockBlogDao mockBlogDao = new MockBlogDao();
+	private Blog blog;
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeconnexionServlet() {
+    public BlogDescriptionServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +36,11 @@ public class DeconnexionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("index.html").forward(request, response);
+		
+		int idBlog = (int) request.getAttribute("idBlog");
+		blog = mockBlogDao.findById(idBlog);
+		request.setAttribute("blog", blog);
+		request.getRequestDispatcher("Blog.jsp").forward(request, response);
 	}
 
 	/**
@@ -43,5 +50,4 @@ public class DeconnexionServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

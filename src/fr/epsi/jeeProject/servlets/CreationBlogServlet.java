@@ -11,14 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.epsi.jeeProject.beans.Blog;
 import fr.epsi.jeeProject.beans.Utilisateur;
+import fr.epsi.jeeProject.dao.mockImpl.MockBlogDao;
 import fr.epsi.jeeProject.dao.mockImpl.MockUtilisateurDao;
 
 /**
  * Servlet implementation class ConnexionServlet
  */
-@WebServlet("/Connexion")
-public class ConnexionServlet extends HttpServlet {
+@WebServlet("/CreationBlog")
+public class CreationBlogServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final MockUtilisateurDao utilisateurDao = new MockUtilisateurDao();
@@ -26,7 +28,7 @@ public class ConnexionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ConnexionServlet() {
+	public CreationBlogServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -38,27 +40,31 @@ public class ConnexionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		boolean userFound = false;
-		ArrayList<Utilisateur> users = (ArrayList<Utilisateur>) utilisateurDao.findAll();
-		String email = request.getParameter("email");
-		for (Utilisateur u : users) {
-			if (request.getParameter("email") != null && request.getParameter("email").equals(u.getEmail())
-					&& request.getParameter("password") != null
-					&& request.getParameter("password").equals(u.getPassword())) {
+		
+			String titre = request.getParameter("titre");
+			String description = request.getParameter("description");
+			
+			//Récupération de l'utilisateur courant grâce à son email
+		 	String email = (String) request.getAttribute("emailUtilisateurCourant");
+		 	Utilisateur utilisateurCourant = MockUtilisateurDao.findByEmail(email);
+		 	
+			if(titre != null & !titre.isEmpty() && description != null & !description.isEmpty() && utilisateurCourant != null ) {
 				
-				//récupération de l'utilisateur qui s'est connecté
-				request.setAttribute("emailUtilisateurCourant",email);
-
-				// redirection vers la servlet qui gère les blogs
-				RequestDispatcher rd = request.getRequestDispatcher("/Blogs");
-				userFound = true;
+				//Création du nouveau blog en base
+			 	Blog blogBienvenue = new Blog();
+			 	blogBienvenue.setCreateur(utilisateurCourant);
+			 	blogBienvenue.setTitre(titre);
+			 	blogBienvenue.setDescription(description);
+			 	MockBlogDao.create(blogBienvenue,utilisateurCourant);
+				
+				//redirection vers la liste des blogs
+				ServletContext context = getServletContext();
+				RequestDispatcher rd = context.getRequestDispatcher("/Blogs");
 				rd.forward(request, response);
-				
 			}
-		}
-		if(!userFound) {
-			request.getRequestDispatcher("index.html").forward(request, response);
-		}
+			else {
+				request.getRequestDispatcher("creationBlog.jsp").forward(request, response);
+			}
 	}
 
 	/**

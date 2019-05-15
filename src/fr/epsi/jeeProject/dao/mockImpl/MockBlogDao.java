@@ -21,28 +21,19 @@ public class MockBlogDao {
 
 	private static final Logger logger = LogManager.getLogger(StartupListener.class);
 	private static final String FIND_ALL_QUERY = "SELECT * from blog";
-	private static final String INSERT_QUERY = "INSERT INTO blog (id,titre,description, createur, date_creation) values (?,?,?,?,?)";
+	private static final String INSERT_QUERY = "INSERT INTO blog (titre,description, createur, date_creation) values (?,?,?,?)";
 	private static final String UPDATE_QUERY = "UPDATE blog set titre = ?, description = ?, date_modification = ? where id = ?";
 	private static final String REMOVE_QUERY = "DELETE from blog where id = ?";
 	private static final String FIND_BY_ID_QUERY = "SELECT * from blog where id = ?";
 
 	public static void create(Blog b, Utilisateur u) {
-		int idBlog = 0;
 		Connection connection = PersistenceManager.getConnection();
 		try {
-			String selectIdBlog = "SELECT NEXT VALUE asFOR SEQ_ID_BLOG FROM BLOG ";
-			PreparedStatement st_select_id = connection.prepareStatement(selectIdBlog, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = st_select_id.executeQuery();
-			st_select_id.close();
-			if(rs.next()) {
-			      idBlog= rs.getInt(1);
-			}
 			PreparedStatement st_insert_blog = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
-			st_insert_blog.setInt(1, idBlog);
-			st_insert_blog.setString(2, b.getTitre());
-			st_insert_blog.setString(3, b.getDescription());
-			st_insert_blog.setString(4, u.getEmail());
-			st_insert_blog.setDate(5, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			st_insert_blog.setString(1, b.getTitre());
+			st_insert_blog.setString(2, b.getDescription());
+			st_insert_blog.setString(3, u.getEmail());
+			st_insert_blog.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
 			st_insert_blog.executeUpdate();
 			st_insert_blog.close();
 			connection.close();
@@ -118,7 +109,7 @@ public class MockBlogDao {
 			if (rs != null) {
 				while (rs.next()) {
 					Blog blog = new Blog();
-					blog.setId(rs.getInt("id"));
+					blog.setId(rs.getInt("idblog"));
 					blog.setCreateur(MockUtilisateurDao.findByEmail(rs.getString("createur")));
 					blog.setTitre(rs.getString("titre"));
 					blog.setDescription(rs.getString("description"));
@@ -130,7 +121,7 @@ public class MockBlogDao {
 			st.close();
 			con.close();
 		} catch (SQLException e) {
-			logger.error("Erreur lors de la récupération des utilisateurs en base");
+			logger.error("Erreur lors de la récupération des blogs en base");
 		}
 		return liste;
 	}
