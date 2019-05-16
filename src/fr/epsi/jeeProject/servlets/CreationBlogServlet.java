@@ -2,6 +2,7 @@ package fr.epsi.jeeProject.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -24,6 +25,8 @@ public class CreationBlogServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final MockUtilisateurDao mockUtilisateurDao = new MockUtilisateurDao();
+	private static final MockBlogDao mockBlogDao = new MockBlogDao();
+
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -52,11 +55,11 @@ public class CreationBlogServlet extends HttpServlet {
 			if(titre != null & !titre.isEmpty() && description != null & !description.isEmpty() && utilisateurCourant != null ) {
 				
 				//Création du nouveau blog en base
-			 	Blog blogBienvenue = new Blog();
-			 	blogBienvenue.setCreateur(utilisateurCourant);
-			 	blogBienvenue.setTitre(titre);
-			 	blogBienvenue.setDescription(description);
-			 	MockBlogDao.create(blogBienvenue,utilisateurCourant);
+			 	Blog blog = new Blog();
+			 	blog.setCreateur(utilisateurCourant);
+			 	blog.setTitre(titre);
+			 	blog.setDescription(description);
+			 	MockBlogDao.create(blog,utilisateurCourant);
 			 	
 				//redirection vers la liste des blogs
 				request.setAttribute("email",email);
@@ -83,5 +86,4 @@ public class CreationBlogServlet extends HttpServlet {
 		doGet(request, response);
 		
 	}
-
 }

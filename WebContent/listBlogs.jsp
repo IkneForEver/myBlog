@@ -39,23 +39,26 @@
 				</form>
 			</td>
 		</tr>
-
+		</table>
+		
 		<%
 			out.println("<\n> <\n>");
 		%>
+		<table>
 		<tr>
 			<td>SUJET</td>
 			<td>AUTEUR</td>
 			<td>DERNIER MSG</td>
-		<tr>
-
+		</tr>
 		<%
 			List<Blog> blogList = (ArrayList<Blog>) request.getAttribute("blogs");
 			for(int i=0;i<blogList.size();i++) {
 				Blog blog = blogList.get(i);
 				out.println("<tr>");
 				out.println("<td>");
-				out.println("<a href = \"Blog.jsp?blogId=${"+blog.getId()+"}>"+ blog.getTitre()+"</a>");
+				out.println(blog.getTitre());
+				//out.println("<a href = \"Blog.jsp?blogId=${test}>"+ blog.getTitre()+"</a>");
+				out.println("test");
 				out.println("</td>");
 				out.println("<td>");
 				out.println(blog.getCreateur().getNom());
@@ -63,10 +66,10 @@
 				out.println("<td>");
 				out.println(blog.getDateModification());
 				out.println("</td>");
+				out.println("<td>");
+				out.println(blog.getId());
+				out.println("</td>");
 				out.println("</tr>");
-				//out.println("<tr>");
-				//out.println("<form action=\"Blog\" method=\"POST\"><input type=\"submit\" value=\"Quitter\"></form>");
-				//out.println("</tr>");
 			}
 		%>
 	</table>

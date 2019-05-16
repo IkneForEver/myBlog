@@ -24,7 +24,7 @@ public class MockBlogDao {
 	private static final String INSERT_QUERY = "INSERT INTO blog (titre,description, createur, date_creation) values (?,?,?,?)";
 	private static final String UPDATE_QUERY = "UPDATE blog set titre = ?, description = ?, date_modification = ? where id = ?";
 	private static final String REMOVE_QUERY = "DELETE from blog where id = ?";
-	private static final String FIND_BY_ID_QUERY = "SELECT * from blog where id = ?";
+	private static final String FIND_BY_ID_QUERY = "SELECT * from blog where idblog = ?";
 
 	public static void create(Blog b, Utilisateur u) {
 		Connection connection = PersistenceManager.getConnection();
@@ -83,7 +83,7 @@ public class MockBlogDao {
 			Blog blog = new Blog();
 			if (rs != null) {
 				if (rs.next()) {
-					blog.setId(rs.getInt("id"));
+					blog.setId(rs.getInt("idblog"));
 					blog.setCreateur(MockUtilisateurDao.findByEmail(rs.getString("createur")));
 					blog.setTitre(rs.getString("titre"));
 					blog.setDescription(rs.getString("description"));

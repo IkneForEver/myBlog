@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Test;
 
 import fr.epsi.jeeProject.beans.Utilisateur;
 import fr.epsi.jeeProject.dao.PersistenceManager;
@@ -19,13 +20,12 @@ import fr.epsi.jeeProject.listener.StartupListener;
 public class MockUtilisateurDao{
 
 	private static final Logger logger = LogManager.getLogger(StartupListener.class);
-	private List<Utilisateur> listOfUtilisateurs;
 	private static final String FIND_ALL_QUERY = "SELECT * from users";
 	private static final String INSERT_QUERY = "INSERT INTO users (email,nom,date_creation, password, is_admin) values (?,?,?,?,?)";
 	private static final String UPDATE_QUERY = "UPDATE users set nom = ?, date_creation= ?; password = ? where email = ?";
 	private static final String REMOVE_QUERY = "DELETE from users where email = ?";
 	private static final String FIND_BY_EMAIL_QUERY = "SELECT * from users where email = ?";
-
+	
 	public static void create(Utilisateur u) {
 
 		Connection connection = PersistenceManager.getConnection();
@@ -35,6 +35,7 @@ public class MockUtilisateurDao{
 			st.setString(2, u.getNom());
 			st.setDate(3, u.getDateCreation());
 			st.setString(4, u.getPassword());
+			st.setBoolean(5, u.getAdmin());
 			st.executeUpdate();
 			st.close();
 			connection.close();
