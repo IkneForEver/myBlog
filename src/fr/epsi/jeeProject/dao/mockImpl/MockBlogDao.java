@@ -22,8 +22,8 @@ public class MockBlogDao {
 	private static final Logger logger = LogManager.getLogger(StartupListener.class);
 	private static final String FIND_ALL_QUERY = "SELECT * from blog";
 	private static final String INSERT_QUERY = "INSERT INTO blog (titre,description, createur, date_creation) values (?,?,?,?)";
-	private static final String UPDATE_QUERY = "UPDATE blog set titre = ?, description = ?, date_modification = ? where id = ?";
-	private static final String REMOVE_QUERY = "DELETE from blog where id = ?";
+	private static final String UPDATE_QUERY = "UPDATE blog set titre = ?, description = ?, date_modification = ? where idblog = ?";
+	private static final String REMOVE_QUERY = "DELETE from blog where idblog = ?";
 	private static final String FIND_BY_ID_QUERY = "SELECT * from blog where idblog = ?";
 
 	public static void create(Blog b, Utilisateur u) {

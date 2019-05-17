@@ -65,7 +65,7 @@
 				out.println(blog.getDateModification());
 				out.println("</td>");
 				out.println("<td>");
-				out.println(blog.getId());
+				//out.println("<a href = \"SuppressionBlog?idBlog="+blog.getId()+"&email="+request.getAttribute("email")+"\">"+"annuler"+"</a>\"");
 				out.println("</td>");
 				out.println("</tr>");
 			}
