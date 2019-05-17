@@ -29,7 +29,7 @@
 			</tr>
 			<tr>
 				<td>Description du blog</td>
-				<td><input type="text" name="description"> <br></td>
+				<td><TEXTAREA NAME="description" ROWS="5"></TEXTAREA> <br></td>
 			</tr>
 
 			<tr>

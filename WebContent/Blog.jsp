@@ -16,6 +16,14 @@
 <body>
 	<table>
 		<tr>
+			<td>Utilisateur : <%
+				out.println(request.getAttribute("nom"));
+			%>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
 			<td colspan="40">
 				<%
 				Blog blog = (Blog)request.getAttribute("blog");
@@ -23,8 +31,11 @@
 				%>
 			</td>
 			<td colspan="40">
-				<form action="Connexion" method="POST">
-					<input type="submit" value="Quitter">
+				<form action="Annulation">
+					<input type="hidden" name="email"
+						value="<%out.print(request.getAttribute("email"));%>">
+				<td colspan="40"><input type="submit" value="Annuler"></a>
+				</td>
 				</form>
 			</td>
 		</tr>

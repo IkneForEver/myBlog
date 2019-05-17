@@ -56,9 +56,7 @@
 				Blog blog = blogList.get(i);
 				out.println("<tr>");
 				out.println("<td>");
-				out.println(blog.getTitre());
-				//out.println("<a href = \"Blog.jsp?blogId=${test}>"+ blog.getTitre()+"</a>");
-				out.println("test");
+				out.println("<a href = \"DescriptionBlog?idBlog="+blog.getId()+"&email="+request.getAttribute("email")+"\">"+blog.getTitre()+"</a>\"");
 				out.println("</td>");
 				out.println("<td>");
 				out.println(blog.getCreateur().getNom());
@@ -72,6 +70,7 @@
 				out.println("</tr>");
 			}
 		%>
+		
 	</table>
 </body>
 </html>
